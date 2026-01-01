@@ -1,6 +1,11 @@
 output "vpc_id" {
   description = "VPC Id"
-  value       = module.vpc.default_vpc_id
+  value       = module.vpc.vpc_id
+}
+
+output "default_security_group_id" {
+  description = "Default security group ID"
+  value       = module.vpc.default_security_group_id
 }
 
 output "private_subnets" {
