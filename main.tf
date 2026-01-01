@@ -28,13 +28,6 @@ module "eks_cluster" {
 
   eks_managed_node_groups = local.eks_managed_node_groups
 
-  # Pass VPC's default security group to avoid cross-VPC issues
-  additional_security_group_ids = [module.vpc.default_security_group_id]
-
-  # Pass explicit values to avoid count dependency issues
-  partition  = data.aws_partition.current.partition
-  account_id = data.aws_caller_identity.current.account_id
-
   addons = {
     coredns = {}
     eks-pod-identity-agent = {
