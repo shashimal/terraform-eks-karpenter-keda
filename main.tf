@@ -26,7 +26,9 @@ module "eks_cluster" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  eks_managed_node_groups = local.eks_managed_node_groups
+  enable_cluster_creator_admin_permissions = true
+  endpoint_private_access = true
+  endpoint_public_access = true
 
   addons = {
     coredns = {}
@@ -39,5 +41,6 @@ module "eks_cluster" {
     }
   }
 
-  depends_on = [module.vpc]
+  eks_managed_node_groups = local.eks_managed_node_groups
+
 }
