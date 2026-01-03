@@ -18,7 +18,7 @@ module "vpc" {
 }
 
 #Setup EKS Cluster
-module "eks_cluster" {
+module "eks" {
   source             = "./modules/eks/cluster"
   name               = local.app_name
   kubernetes_version = "1.32"
@@ -42,4 +42,16 @@ module "eks_cluster" {
   }
 
   eks_managed_node_groups = local.eks_managed_node_groups
+}
+
+module "karpenter" {
+  source = "./modules/eks/karpenter"
+
+  cluster_name = module.eks.cluster_name
+  create_pod_identity_association = true
+  create_access_entry = true
+  create_node_iam_role = false
+  worker_iam_role_arn = module.eks_workers_iam_role.arn
+
+  depends_on = [module.eks]
 }
