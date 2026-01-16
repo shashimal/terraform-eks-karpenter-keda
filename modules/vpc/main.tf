@@ -21,11 +21,6 @@ module "vpc" {
     Name = "${var.name}-vpc"
   }
 
-  private_subnet_tags = {
-    Name = "private-subnet"
-  }
-
-  public_subnet_tags = {
-    Name = "public-subnet"
-  }
+  private_subnet_tags = var.private_subnet_tags
+  public_subnet_tags = var.public_subnet_tags
 }

@@ -7,6 +7,10 @@ locals {
       min_size       = 2
       instance_types = ["t3.medium"]
 
+      labels = {
+        "karpenter.sh/controller" = "true"
+      }
+
       # taints = {
       #   addons = {
       #     key    = "CriticalAddonsOnly"

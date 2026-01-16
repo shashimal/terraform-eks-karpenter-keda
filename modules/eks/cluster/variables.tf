@@ -65,3 +65,11 @@ variable "additional_security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "node_security_group_tags" {
+  description = "Node security group tags"
+  type = map(any)
+  default = {}
+}
+
+

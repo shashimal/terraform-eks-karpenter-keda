@@ -22,3 +22,15 @@ variable "azs" {
   description = "Availability zones"
   type        = list(string)
 }
+
+variable "private_subnet_tags" {
+  description = "Private subnet tags"
+  type        = map(string)
+  default     = {}
+}
+
+variable "public_subnet_tags" {
+  description = "Private subnet tags"
+  type        = map(string)
+  default     = {}
+}
