@@ -54,15 +54,15 @@ module "karpenter" {
   create_access_entry = var.create_access_entry # use an existing Node IAM role from the EKS managed node group
   access_entry_type   = var.access_entry_type
 
-  create_node_iam_role = false
+  create_node_iam_role = var.create_node_iam_role
   node_iam_role_arn    = var.worker_iam_role_arn
   cluster_ip_family    = var.cluster_ip_family
 
-  create_iam_role                 = !var.enable_irsa ? true : false # can't `enable` when karpenter use fargate profile
-  enable_inline_policy            = var.enable_inline_policy && !var.enable_irsa ? true : false
-  create_pod_identity_association = !var.enable_irsa ? true : false
+  create_iam_role                 = var.create_iam_role
+  enable_inline_policy            = var.enable_inline_policy
+  create_pod_identity_association = var.create_pod_identity_association
 
-  enable_spot_termination = !var.enable_irsa ? true : false
+  enable_spot_termination = var.enable_spot_termination
 
 }
 

@@ -1,6 +1,6 @@
 variable "cluster_name" {
   description = "EKS cluster name"
-  type = string
+  type        = string
 }
 
 variable "cluster_endpoint" {
@@ -10,13 +10,13 @@ variable "cluster_endpoint" {
 
 variable "create_pod_identity_association" {
   description = "Enable pod identity for Karpenter"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 variable "create_node_iam_role" {
   description = "Create default node IAM role"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "cluster_ip_family" {
@@ -27,8 +27,8 @@ variable "cluster_ip_family" {
 
 variable "worker_iam_role_arn" {
   description = "Worker IAM role arn"
-  type = string
-  default = null
+  type        = string
+  default     = null
 }
 
 variable "create_access_entry" {
@@ -122,7 +122,7 @@ variable "karpenter_nodepools" {
       key      = string
       operator = string
       values   = list(string)
-    })
+      })
     )
     karpenter_nodepool_disruption = object({
       consolidation_policy     = string
@@ -144,27 +144,27 @@ variable "karpenter_nodepools" {
       key      = "karpenter.k8s.aws/instance-category"
       operator = "In"
       values   = ["m"]
-    }, {
+      }, {
       key      = "karpenter.k8s.aws/instance-cpu"
       operator = "In"
       values   = ["4,8,16"]
-    }, {
+      }, {
       key      = "karpenter.k8s.aws/instance-generation"
       operator = "Gt"
       values   = ["5"]
-    }, {
+      }, {
       key      = "karpenter.sh/capacity-type"
       operator = "In"
       values   = ["on-demand"]
-    }, {
+      }, {
       key      = "kubernetes.io/arch"
       operator = "In"
       values   = ["amd64"]
-    }, {
+      }, {
       key      = "kubernetes.io/os"
       operator = "In"
       values   = ["linux"]
-    }
+      }
     ]
     karpenter_nodepool_disruption = {
       consolidation_policy     = "WhenEmptyOrUnderutilized" # WhenEmpty or WhenEmptyOrUnderutilized
@@ -265,6 +265,18 @@ variable "enable_inline_policy" {
   description = "Determines whether the controller policy is created as a standard IAM policy or inline IAM policy. This can be enabled when the error `LimitExceeded: Cannot exceed quota for PolicySize: 6144` is received since standard IAM policies have a limit of 6,144 characters versus an inline role policy's limit of 10,240 ([Reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html))"
   type        = bool
   default     = false
+}
+
+variable "enable_spot_termination" {
+  description = "Determines whether to enable native spot termination handling"
+  type        = bool
+  default     = true
+}
+
+variable "create_iam_role" {
+  description = "Determines whether an IAM role is created"
+  type        = bool
+  default     = true
 }
 
 variable "region" {

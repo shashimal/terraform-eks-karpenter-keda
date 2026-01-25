@@ -188,7 +188,5 @@ module "karpenter" {
   karpenter_nodeclasses           = local.karpenter_nodeclasses
   karpenter_nodepools             = local.karpenter_nodepools
 
-
-
   depends_on = [module.eks]
 }
