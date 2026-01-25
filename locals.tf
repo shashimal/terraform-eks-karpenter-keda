@@ -11,13 +11,13 @@ locals {
         "karpenter.sh/controller" = "true"
       }
 
-      # taints = {
-      #   addons = {
-      #     key    = "CriticalAddonsOnly"
-      #     value  = "true"
-      #     effect = "NO_SCHEDULE"
-      #   },
-      # }
+      taints = {
+        addons = {
+          key    = "CriticalAddonsOnly"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      }
     }
   }
 }

@@ -34,6 +34,14 @@ locals {
     nodeSelector = {
       "karpenter.sh/controller" = "true"
     }
+    tolerations = [
+      {
+        key      = "CriticalAddonsOnly"
+        operator = "Equal"
+        value    = "true"
+        effect   = "NoSchedule"
+      }
+    ]
   } : {}
 
   karpenter_helm_values = merge(
