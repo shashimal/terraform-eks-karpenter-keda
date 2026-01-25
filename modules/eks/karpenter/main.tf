@@ -22,14 +22,6 @@ locals {
     }
   }
 
-  # irsa_values = var.enable_irsa ? {
-  #   serviceAccount = {
-  #     annotations = {
-  #       "eks.amazonaws.com/role-arn" = aws_iam_role.controller[0].arn
-  #     }
-  #   }
-  # } : {}
-
   non_irsa_values = !var.enable_irsa ? {
     nodeSelector = {
       "karpenter.sh/controller" = "true"

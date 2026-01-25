@@ -1,23 +1,6 @@
 locals {
-  eks_managed_node_groups = {
-    main-node-group = {
-      name           = "main-node-group"
-      max_size       = 3
-      desired_size   = 2
-      min_size       = 2
-      instance_types = ["t3.medium"]
-
-      labels = {
-        "karpenter.sh/controller" = "true"
-      }
-
-      taints = {
-        addons = {
-          key    = "CriticalAddonsOnly"
-          value  = "true"
-          effect = "NO_SCHEDULE"
-        }
-      }
-    }
-  }
+  app_name        = "karpenter-keda-demo"
+  cidr            = "10.0.0.0/16"
+  public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
+  private_subnets = ["10.0.11.0/24", "10.0.12.0/24"]
 }

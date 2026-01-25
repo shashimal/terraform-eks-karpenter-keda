@@ -1,8 +1,25 @@
 locals {
-  app_name        = "karpenter-keda-demo"
-  cidr            = "10.0.0.0/16"
-  public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets = ["10.0.11.0/24", "10.0.12.0/24"]
+  eks_managed_node_groups = {
+    main-node-group = {
+      name           = "main-node-group"
+      max_size       = 3
+      desired_size   = 2
+      min_size       = 2
+      instance_types = ["t3.medium"]
+
+      labels = {
+        "karpenter.sh/controller" = "true"
+      }
+
+      taints = {
+        addons = {
+          key    = "CriticalAddonsOnly"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      }
+    }
+  }
 
   karpenter_nodeclasses = [
     {
@@ -126,26 +143,9 @@ locals {
   ]
 }
 
-#Setup VPC
-module "vpc" {
-  source = "./modules/vpc"
 
-  name = local.app_name
-  cidr = local.cidr
-
-  azs             = ["${data.aws_region.current.region}a", "${data.aws_region.current.region}b"]
-  public_subnets  = local.public_subnets
-  private_subnets = local.private_subnets
-
-  private_subnet_tags = {
-    Name                              = "App-Subnet"
-    "kubernetes.io/role/internal-elb" = 1
-    "karpenter.sh/discovery"          = local.app_name
-  }
-
-}
-
-#Setup EKS Cluster
+###################### Setup EKS Cluster #################################
+##########################################################################
 module "eks" {
   source             = "./modules/eks/cluster"
   name               = local.app_name
@@ -170,12 +170,14 @@ module "eks" {
   }
 
   eks_managed_node_groups = local.eks_managed_node_groups
+
   node_security_group_tags = {
     "karpenter.sh/discovery" = local.app_name
   }
-
 }
 
+###################### Setup Karpenter #################################
+##########################################################################
 module "karpenter" {
   source = "./modules/eks/karpenter"
 
