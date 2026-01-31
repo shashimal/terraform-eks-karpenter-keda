@@ -22,7 +22,7 @@ locals {
     }
   }
 
-  non_irsa_values = !var.enable_irsa ? {
+  non_irsa_values = {
     nodeSelector = {
       "karpenter.sh/controller" = "true"
     }
@@ -34,7 +34,7 @@ locals {
         effect   = "NoSchedule"
       }
     ]
-  } : {}
+  }
 
   karpenter_helm_values = merge(
     local.base_karpenter_values,
@@ -45,7 +45,7 @@ locals {
 
 module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  version = "~> 21.9.0"
+  version = "~> 21.0"
 
   region = var.region
 
