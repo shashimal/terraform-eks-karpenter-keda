@@ -1,0 +1,19 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: nginx-cron-scaler
+  namespace: app
+spec:
+  scaleTargetRef:
+    name: nginx-app
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  idleReplicaCount: 0
+  triggers:
+    # Business hours: 8 AM – 8 PM (daily)
+    - type: cron
+      metadata:
+        timezone: Asia/Singapore
+        start: "0 8 * * *"
+        end: "20 10 * * *"
+        desiredReplicas: "5"

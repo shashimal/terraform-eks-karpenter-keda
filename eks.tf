@@ -192,3 +192,42 @@ module "karpenter" {
 
   depends_on = [module.eks]
 }
+
+###################### Setup KEDA #######################################
+##########################################################################
+module "keda" {
+  source = "./modules/eks/keda"
+
+  keda_version              = "2.18.0"
+  cluster_name              = module.eks.cluster_name
+  keda_namespace = "keda-system"
+  enable_pod_identity       = true
+
+
+  tags = {
+    Environment = "development"
+    Project     = local.app_name
+    Component   = "keda"
+  }
+
+  depends_on = [module.eks]
+}
+
+###################### KEDA Example Application ########################
+##########################################################################
+# module "keda_example" {
+#   source = "./modules/eks/keda/examples"
+#
+#   keda_ready           = module.keda.keda_status
+#   cluster_name         = module.eks.cluster_name
+#   create_sqs_example = true
+#   create_test_producer = false # Set to true to create test message producer
+#
+#   tags = {
+#     Environment = "development"
+#     Project     = local.app_name
+#     Component   = "keda-examples"
+#   }
+#
+#   depends_on = [module.keda]
+# }
