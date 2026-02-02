@@ -37,14 +37,7 @@ locals {
           tags = {
             "karpenter.sh/discovery" = local.app_name
           }
-        },
-        # {
-        #   id = module.ingress_traffic_sg.security_group_id
-        #
-        # }
-        # {
-        #   id = module.rds_security_group.security_group_id
-        # }
+        }
 
       ]
       karpenter_ami_selector_maps = [
@@ -59,7 +52,6 @@ locals {
       }
       karpenter_block_device_mapping = [
         {
-          #karpenter_root_volume_size
           "deviceName" = "/dev/xvda"
           "ebs" = {
             "encrypted"           = true
@@ -68,7 +60,6 @@ locals {
             "deleteOnTermination" = true
           }
           }, {
-          #karpenter_ephemeral_volume_size
           "deviceName" = "/dev/xvdb",
           "ebs" = {
             "encrypted"           = true
@@ -130,9 +121,9 @@ locals {
         }
       ]
       karpenter_nodepool_disruption = {
-        consolidation_policy     = "WhenEmptyOrUnderutilized" # WhenEmpty or WhenEmptyOrUnderutilized
+        consolidation_policy     = "WhenEmptyOrUnderutilized"
         consolidate_after        = "20s"
-        expire_after             = "168h" # 7d | 168h | 1w
+        expire_after             = "168h"
         termination_grace_period = "5m"
       }
       karpenter_nodepool_disruption_budgets = [{
@@ -212,22 +203,3 @@ module "keda" {
 
   depends_on = [module.eks]
 }
-
-###################### KEDA Example Application ########################
-##########################################################################
-# module "keda_example" {
-#   source = "./modules/eks/keda/examples"
-#
-#   keda_ready           = module.keda.keda_status
-#   cluster_name         = module.eks.cluster_name
-#   create_sqs_example = true
-#   create_test_producer = false # Set to true to create test message producer
-#
-#   tags = {
-#     Environment = "development"
-#     Project     = local.app_name
-#     Component   = "keda-examples"
-#   }
-#
-#   depends_on = [module.keda]
-# }
