@@ -51,7 +51,7 @@ module "karpenter" {
 
   cluster_name = var.cluster_name
 
-  create_access_entry = var.create_access_entry # use an existing Node IAM role from the EKS managed node group
+  create_access_entry = var.create_access_entry
   access_entry_type   = var.access_entry_type
 
   create_node_iam_role = var.create_node_iam_role
@@ -63,7 +63,6 @@ module "karpenter" {
   create_pod_identity_association = var.create_pod_identity_association
 
   enable_spot_termination = var.enable_spot_termination
-
 }
 
 ###############################
