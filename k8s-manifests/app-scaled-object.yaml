@@ -6,14 +6,14 @@ metadata:
 spec:
   scaleTargetRef:
     name: nginx-app
-  minReplicaCount: 0
+  minReplicaCount: 1
   maxReplicaCount: 10
   idleReplicaCount: 0
+  cooldownPeriod: 30
   triggers:
-    # Business hours: 8 AM – 8 PM (daily)
     - type: cron
       metadata:
         timezone: Asia/Singapore
-        start: "0 8 * * *"
-        end: "20 10 * * *"
+        start: "0 8 * * 1-5"   # 8:00 AM, Monday to Friday
+        end: "0 20 * * 1-5"    # 8:00 PM, Monday to Friday
         desiredReplicas: "5"
